@@ -2,6 +2,7 @@
 import Link from 'next/link'
 import React from 'react'
 import { usePathname } from 'next/navigation'
+import { SignedIn } from '@clerk/nextjs'
 
 const navItems = () => {
   const pathname = usePathname();
@@ -16,6 +17,10 @@ const navItems = () => {
       <Link href="/my-journey">
         <p className={pathname === '/my-journey' ? 'font-bold text-black ' : ''}>My Journey</p>
       </Link>
+      <SignedIn>
+     
+       
+      </SignedIn>
     </div>
   )
 }
