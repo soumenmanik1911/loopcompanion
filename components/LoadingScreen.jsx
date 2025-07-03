@@ -4,27 +4,32 @@ import { useState, useEffect } from 'react';
 
 const LoadingScreen = () => {
   const [loading, setLoading] = useState(true);
+  const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
-    // Wait for the page to fully load
+    // Function to handle page load completion
     const handleLoad = () => {
-      // Add a small delay to ensure smooth transition
+      // First set fadeOut to true to trigger the animation
+      setFadeOut(true);
+      
+      // Then after animation completes, set loading to false to remove from DOM
       setTimeout(() => {
         setLoading(false);
-      }, 1000);
+      }, 500); // Match this to the fadeOut animation duration
     };
 
-    // Check if document is already loaded
+    // If document is already loaded
     if (document.readyState === 'complete') {
-      handleLoad();
+      // Add a small delay to ensure the component is mounted
+      setTimeout(handleLoad, 500);
     } else {
       // Set up event listener for when the page loads
       window.addEventListener('load', handleLoad);
       
       // Fallback timer in case load event doesn't fire
       const timer = setTimeout(() => {
-        setLoading(false);
-      }, 3000);
+        handleLoad();
+      }, 2000);
       
       // Clean up
       return () => {
@@ -39,7 +44,7 @@ const LoadingScreen = () => {
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center bg-white"
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-white ${fadeOut ? 'opacity-0' : 'opacity-100'}`}
       style={{
         transition: 'opacity 0.5s ease-in-out',
       }}
